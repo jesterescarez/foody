@@ -8,8 +8,8 @@ import '../less/user.less';
 export default class Users extends React.Component {
 
   state = {
-    user: {},
-    userFoods: []
+    user: null,
+    userFoods: null
   }
 
   async addFood(foodId) {
@@ -57,17 +57,28 @@ export default class Users extends React.Component {
   componentDidMount() {
     axios.get(`${process.env.REACT_APP_PUBLIC_API_URL}/users/${this.props.match.params.userId}`).then((response) => {
       this.setState({user: response.data});
+    }).catch((e) => {
+      this.setState({user: {}});
     })
     
     axios.get(`${process.env.REACT_APP_PUBLIC_API_URL}/users/${this.props.match.params.userId}/foods`).then((response) => {
       this.setState({userFoods: response.data});
+    }).catch((e) => {
+      this.setState({userFoods: []});
     });
   }
 
   render() {
+    const label = <h1>User information</h1>;
+    if (this.state.user === null || this.state.userFoods === null) {
+      return (<div><img src='/spinner.gif' className='spinner' alt='Spinner' /></div>)
+    }
+    if (this.state.user.id === undefined) {
+      return (<div> {label} <p>User ID {this.props.match.params.userId} not found!</p></div>)
+    }
     return (
       <div>
-        <h1>User information</h1>
+        {label}
         <p>ID: {this.state.user.id}</p>
         <p>Name: {this.state.user.name}</p>
         <p>Email: {this.state.user.email}</p>

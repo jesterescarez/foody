@@ -32,6 +32,6 @@ class UserController extends Controller
     public function show(int $userId)
     {
         $response = Http::get("{$this->privateApiUrl}/users/{$userId}");
-        return $response->json();
+        return $response->throw()->json();
     }
 }
