@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
 } from 'typeorm';
+import { FoodNutrient } from '../../food-nutrients/entities/food-nutrient.entity';
 
 @Entity({ name: 'foods' })
 export class Food extends BaseEntity {
@@ -20,4 +21,7 @@ export class Food extends BaseEntity {
 
   @OneToMany(() => UserFood, (userFood) => userFood.food)
   userFoods: UserFood[];
+
+  @OneToMany(() => FoodNutrient, (foodNutrient) => foodNutrient.food)
+  foodNutrients: FoodNutrient[];
 }
